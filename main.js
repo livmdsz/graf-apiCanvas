@@ -1,157 +1,195 @@
-function draw() {
-  const canvas = document.getElementById("canvas");
-  if (canvas.getContext) {
-    const ctx = canvas.getContext("2d");
+const figures = [
+  {
+    name: "Rectángulo azul",
+    description: "Rectángulo relleno con un recorte y un contorno.",
+    draw(ctx) {
+      ctx.fillStyle = "#2388ff";
+      ctx.fillRect(115, 70, 180, 180);
+      ctx.clearRect(145, 100, 80, 80);
+      ctx.strokeStyle = "#5be1ff";
+      ctx.lineWidth = 4;
+      ctx.strokeRect(152, 107, 66, 66);
+    }
+  },
+  {
+    name: "Triángulo rojo",
+    description: "Triángulo relleno construido mediante segmentos de línea.",
+    draw(ctx) {
+      ctx.fillStyle = "#ff426d";
+      ctx.beginPath();
+      ctx.moveTo(260, 65);
+      ctx.lineTo(315, 125);
+      ctx.lineTo(205, 125);
+      ctx.closePath();
+      ctx.fill();
+    }
+  },
+  {
+    name: "Cara feliz",
+    description: "Figura circular con ojos y una sonrisa trazada con arcos.",
+    draw(ctx) {
+      ctx.strokeStyle = "#5be1ff";
+      ctx.fillStyle = "rgba(91,225,255,.12)";
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.arc(260, 180, 90, 0, Math.PI * 2, true);
+      ctx.fill();
+      ctx.stroke();
 
-    //draw a blue rectangle
-    /*ctx.fillStyle = "blue";
-    ctx.fillRect(25, 25, 100, 100);
-    ctx.clearRect(45, 45, 60, 60);
-    ctx.strokeRect(50, 50, 50, 50);*/
+      ctx.beginPath();
+      ctx.arc(260, 180, 60, 0, Math.PI, false);
+      ctx.stroke();
 
-    //draw a red triangle
-    /*ctx.fillStyle = "red";
-    ctx.beginPath();
-    ctx.moveTo(75, 50);
-    ctx.lineTo(100, 75);
-    ctx.lineTo(100, 25);
-    ctx.fill();
-
-    //draw a happy face
-    /*ctx.beginPath();
-    ctx.arc(75, 75, 50, 0, Math.PI * 2, true); // Círculo externo
-    ctx.moveTo(110, 75);
-    ctx.arc(75, 75, 35, 0, Math.PI, false); // Boca (en el sentido de las agujas del reloj)
-    ctx.moveTo(65, 65);
-    ctx.arc(60, 65, 5, 0, Math.PI * 2, true); // Ojo izquierdo
-    ctx.moveTo(95, 65);
-    ctx.arc(90, 65, 5, 0, Math.PI * 2, true); // Ojo derecho
-    ctx.stroke();*/
-
-    // Triángulo relleno
-    /*ctx.beginPath();
-    ctx.moveTo(25, 25);
-    ctx.lineTo(105, 25);
-    ctx.lineTo(25, 105);
-    ctx.fill();*/
-
-    // Triángulo contorneado
-    /*ctx.beginPath();
-    ctx.moveTo(125, 125);
-    ctx.lineTo(125, 45);
-    ctx.lineTo(45, 125);
-    ctx.closePath();
-    ctx.stroke();*/
-
-    /*for (let i = 0; i < 4; i++) {
-      for (let j = 0; j < 3; j++) {
-        ctx.beginPath();
-        const x = 25 + j * 50; // Coordenada x
-        const y = 25 + i * 50; // Coordenada y
-        const radius = 20; // Radio del Arco
-        const startAngle = 0; // Punto inicial del Círculo
-        const endAngle = Math.PI + (Math.PI * j) / 2; // Punto final del Círculo
-        const counterclockwise = i % 2 !== 0; // En el sentido de las agujas del reloj o en sentido contrario
-
-        ctx.arc(x, y, radius, startAngle, endAngle, counterclockwise);
-
-        if (i > 1) {
-          ctx.fill();
-        } else {
-          ctx.stroke();
+      ctx.fillStyle = "#5be1ff";
+      ctx.beginPath();
+      ctx.arc(235, 160, 8, 0, Math.PI * 2);
+      ctx.arc(285, 160, 8, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  },
+  {
+    name: "Triángulo relleno",
+    description: "Triángulo sólido definido por tres puntos.",
+    draw(ctx) {
+      ctx.fillStyle = "#8f7cff";
+      ctx.beginPath();
+      ctx.moveTo(155, 80);
+      ctx.lineTo(350, 80);
+      ctx.lineTo(155, 275);
+      ctx.closePath();
+      ctx.fill();
+    }
+  },
+  {
+    name: "Triángulo contorneado",
+    description: "Triángulo cerrado representado únicamente mediante su contorno.",
+    draw(ctx) {
+      ctx.strokeStyle = "#5be1ff";
+      ctx.lineWidth = 5;
+      ctx.beginPath();
+      ctx.moveTo(350, 275);
+      ctx.lineTo(350, 80);
+      ctx.lineTo(155, 275);
+      ctx.closePath();
+      ctx.stroke();
+    }
+  },
+  {
+    name: "Arcos",
+    description: "Matriz de arcos con diferentes ángulos y sentidos de trazado.",
+    draw(ctx) {
+      ctx.strokeStyle = "#5be1ff";
+      ctx.fillStyle = "#9b7cff";
+      ctx.lineWidth = 3;
+      for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 3; j++) {
+          ctx.beginPath();
+          const x = 150 + j * 110;
+          const y = 70 + i * 75;
+          const radius = 28;
+          const endAngle = Math.PI + (Math.PI * j) / 2;
+          const counterclockwise = i % 2 !== 0;
+          ctx.arc(x, y, radius, 0, endAngle, counterclockwise);
+          if (i > 1) ctx.fill(); else ctx.stroke();
         }
       }
-    }*/
-
-    // Ejemplo de curvas cuadráticas
-    /*ctx.beginPath();
-    ctx.moveTo(75, 25);
-    ctx.quadraticCurveTo(25, 25, 25, 62.5);
-    ctx.quadraticCurveTo(25, 100, 50, 100);
-    ctx.quadraticCurveTo(50, 120, 30, 125);
-    ctx.quadraticCurveTo(60, 120, 65, 100);
-    ctx.quadraticCurveTo(125, 100, 125, 62.5);
-    ctx.quadraticCurveTo(125, 25, 75, 25);
-    ctx.stroke();*/
-
-    // Ejemplo de curvas cúbicas
-    ctx.beginPath();
-    ctx.moveTo(75, 40);
-    ctx.bezierCurveTo(75, 37, 70, 25, 50, 25);
-    ctx.bezierCurveTo(20, 25, 20, 62.5, 20, 62.5);
-    ctx.bezierCurveTo(20, 80, 40, 102, 75, 120);
-    ctx.bezierCurveTo(110, 102, 130, 80, 130, 62.5);
-    ctx.bezierCurveTo(130, 62.5, 130, 25, 100, 25);
-    ctx.bezierCurveTo(85, 25, 75, 37, 75, 40);
-    ctx.fill();
-
-    /*roundedRect(ctx, 12, 12, 150, 150, 15);
-    roundedRect(ctx, 19, 19, 150, 150, 9);
-    roundedRect(ctx, 53, 53, 49, 33, 10);
-    roundedRect(ctx, 53, 119, 49, 16, 6);
-    roundedRect(ctx, 135, 53, 49, 33, 10);
-    roundedRect(ctx, 135, 119, 25, 49, 10);
-
-    ctx.beginPath();
-    ctx.arc(37, 37, 13, Math.PI / 7, -Math.PI / 7, false);
-    ctx.lineTo(31, 37);
-    ctx.fill();
-
-    for (let i = 0; i < 8; i++) {
-      ctx.fillRect(51 + i * 16, 35, 4, 4);
     }
-
-    for (i = 0; i < 6; i++) {
-      ctx.fillRect(115, 51 + i * 16, 4, 4);
+  },
+  {
+    name: "Curva cuadrática",
+    description: "Ejemplo de trazado mediante quadraticCurveTo().",
+    draw(ctx) {
+      ctx.strokeStyle = "#5be1ff";
+      ctx.lineWidth = 5;
+      ctx.beginPath();
+      ctx.moveTo(120, 85);
+      ctx.quadraticCurveTo(55, 85, 55, 150);
+      ctx.quadraticCurveTo(55, 215, 105, 215);
+      ctx.quadraticCurveTo(105, 250, 65, 260);
+      ctx.quadraticCurveTo(120, 250, 130, 215);
+      ctx.quadraticCurveTo(400, 215, 400, 150);
+      ctx.quadraticCurveTo(400, 85, 330, 85);
+      ctx.stroke();
     }
-
-    for (i = 0; i < 8; i++) {
-      ctx.fillRect(51 + i * 16, 99, 4, 4);
+  },
+  {
+    name: "Curva cúbica",
+    description: "Ejemplo de curva Bézier cúbica mediante bezierCurveTo().",
+    draw(ctx) {
+      ctx.fillStyle = "rgba(155,124,255,.72)";
+      ctx.strokeStyle = "#5be1ff";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(260, 90);
+      ctx.bezierCurveTo(260, 84, 245, 65, 210, 65);
+      ctx.bezierCurveTo(150, 65, 150, 130, 150, 130);
+      ctx.bezierCurveTo(150, 165, 190, 210, 260, 255);
+      ctx.bezierCurveTo(330, 210, 370, 165, 370, 130);
+      ctx.bezierCurveTo(370, 130, 370, 65, 310, 65);
+      ctx.bezierCurveTo(275, 65, 260, 84, 260, 90);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
     }
+  },
+  {
+    name: "Robot / rectángulos redondeados",
+    description: "Composición final del código original usando roundedRect(), arcos, líneas y curvas Bézier.",
+    draw(ctx) {
+      ctx.strokeStyle = "#5be1ff";
+      ctx.fillStyle = "#5be1ff";
+      ctx.lineWidth = 3;
 
-    ctx.beginPath();
-    ctx.moveTo(83, 116);
-    ctx.lineTo(83, 102);
-    ctx.bezierCurveTo(83, 94, 89, 88, 97, 88);
-    ctx.bezierCurveTo(105, 88, 111, 94, 111, 102);
-    ctx.lineTo(111, 116);
-    ctx.lineTo(106.333, 111.333);
-    ctx.lineTo(101.666, 116);
-    ctx.lineTo(97, 111.333);
-    ctx.lineTo(92.333, 116);
-    ctx.lineTo(87.666, 111.333);
-    ctx.lineTo(83, 116);
-    ctx.fill();
+      roundedRect(ctx, 155, 55, 220, 245, 24);
+      roundedRect(ctx, 168, 68, 220, 245, 14);
+      roundedRect(ctx, 218, 118, 70, 45, 10);
+      roundedRect(ctx, 218, 210, 70, 24, 6);
+      roundedRect(ctx, 335, 118, 70, 45, 10);
+      roundedRect(ctx, 335, 210, 36, 70, 10);
 
-    ctx.fillStyle = "white";
-    ctx.beginPath();
-    ctx.moveTo(91, 96);
-    ctx.bezierCurveTo(88, 96, 87, 99, 87, 101);
-    ctx.bezierCurveTo(87, 103, 88, 106, 91, 106);
-    ctx.bezierCurveTo(94, 106, 95, 103, 95, 101);
-    ctx.bezierCurveTo(95, 99, 94, 96, 91, 96);
-    ctx.moveTo(103, 96);
-    ctx.bezierCurveTo(100, 96, 99, 99, 99, 101);
-    ctx.bezierCurveTo(99, 103, 100, 106, 103, 106);
-    ctx.bezierCurveTo(106, 106, 107, 103, 107, 101);
-    ctx.bezierCurveTo(107, 99, 106, 96, 103, 96);
-    ctx.fill();
+      ctx.beginPath();
+      ctx.arc(190, 88, 18, Math.PI / 7, -Math.PI / 7, false);
+      ctx.lineTo(182, 88);
+      ctx.fill();
 
-    ctx.fillStyle = "black";
-    ctx.beginPath();
-    ctx.arc(101, 102, 2, 0, Math.PI * 2, true);
-    ctx.fill();
+      for (let i = 0; i < 8; i++) ctx.fillRect(210 + i * 19, 86, 5, 5);
+      for (let i = 0; i < 6; i++) ctx.fillRect(307, 107 + i * 20, 5, 5);
+      for (let i = 0; i < 8; i++) ctx.fillRect(210 + i * 19, 166, 5, 5);
 
-    ctx.beginPath();
-    ctx.arc(89, 102, 2, 0, Math.PI * 2, true);
-    ctx.fill();*/
+      ctx.beginPath();
+      ctx.moveTo(260, 206);
+      ctx.lineTo(260, 187);
+      ctx.bezierCurveTo(260, 176, 268, 168, 280, 168);
+      ctx.bezierCurveTo(292, 168, 300, 176, 300, 187);
+      ctx.lineTo(300, 206);
+      ctx.lineTo(294, 200);
+      ctx.lineTo(288, 206);
+      ctx.lineTo(282, 200);
+      ctx.lineTo(276, 206);
+      ctx.lineTo(270, 200);
+      ctx.closePath();
+      ctx.fill();
 
+      ctx.fillStyle = "#07101d";
+      ctx.beginPath();
+      ctx.arc(272, 183, 3, 0, Math.PI * 2);
+      ctx.arc(288, 183, 3, 0, Math.PI * 2);
+      ctx.fill();
+    }
   }
-}
+];
 
-// Una función auxiliar para dibujar un rectángulo con esquinas redondeadas.
+let current = 0;
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+const title = document.getElementById("figureTitle");
+const description = document.getElementById("figureDescription");
+const currentNumber = document.getElementById("currentNumber");
+const totalNumber = document.getElementById("totalNumber");
+const dots = document.getElementById("dots");
+const grid = document.getElementById("figureGrid");
 
-/*function roundedRect(ctx, x, y, width, height, radius) {
+function roundedRect(ctx, x, y, width, height, radius) {
   ctx.beginPath();
   ctx.moveTo(x, y + radius);
   ctx.arcTo(x, y + height, x + radius, y + height, radius);
@@ -159,4 +197,65 @@ function draw() {
   ctx.arcTo(x + width, y, x + width - radius, y, radius);
   ctx.arcTo(x, y, x, y + radius, radius);
   ctx.stroke();
-}*/
+}
+
+function drawFigure() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.save();
+  figures[current].draw(ctx);
+  ctx.restore();
+
+  title.textContent = figures[current].name;
+  description.textContent = figures[current].description;
+  currentNumber.textContent = String(current + 1).padStart(2, "0");
+
+  document.querySelectorAll(".dot").forEach((dot, i) => dot.classList.toggle("active", i === current));
+  document.querySelectorAll(".figure-item").forEach((item, i) => item.classList.toggle("active", i === current));
+}
+
+function buildNavigation() {
+  totalNumber.textContent = String(figures.length).padStart(2, "0");
+
+  figures.forEach((figure, i) => {
+    const dot = document.createElement("button");
+    dot.className = "dot";
+    dot.title = figure.name;
+    dot.setAttribute("aria-label", `Mostrar ${figure.name}`);
+    dot.addEventListener("click", () => { current = i; drawFigure(); });
+    dots.appendChild(dot);
+
+    const item = document.createElement("button");
+    item.className = "figure-item";
+    item.innerHTML = `<span class="num">${String(i + 1).padStart(2, "0")}</span><span class="name">${figure.name}</span>`;
+    item.addEventListener("click", () => {
+      current = i;
+      drawFigure();
+      document.querySelector(".viewer-card").scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+    grid.appendChild(item);
+  });
+}
+
+document.getElementById("prevBtn").addEventListener("click", () => {
+  current = (current - 1 + figures.length) % figures.length;
+  drawFigure();
+});
+
+document.getElementById("nextBtn").addEventListener("click", () => {
+  current = (current + 1) % figures.length;
+  drawFigure();
+});
+
+function setDate() {
+  const now = new Date();
+  document.getElementById("currentDate").textContent = now.toLocaleDateString("es-MX", {
+    day: "2-digit", month: "2-digit", year: "numeric"
+  });
+  document.getElementById("copyrightYear").textContent = now.getFullYear();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  setDate();
+  buildNavigation();
+  drawFigure();
+});
